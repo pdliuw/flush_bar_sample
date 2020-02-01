@@ -22,7 +22,7 @@ class _FlushBarState extends State<FlushBarPage> {
   int _tipSecondDuration = 0;
 
   List<bool> _toggleSelected = [true, false, false, false];
-  List<String> _toggleLabels = ["info", "warnning", "error", "completed"];
+  List<String> _toggleLabels = ["info", "warn", "error", "complete"];
   List<Color> _tipStyleColors = [
     Colors.blue[100],
     Colors.yellow[300],
