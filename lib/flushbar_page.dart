@@ -60,14 +60,14 @@ class _FlushBarState extends State<FlushBarPage> {
       titleText: Text(
         "${_tipTitle ?? '提示'}",
         style: TextStyle(
-          color: Colors.black54,
+          color: Colors.black87,
         ),
       ),
       message: "${_tipMessage ?? 'message'}",
       messageText: Text(
         "${_tipMessage ?? '提示'}",
         style: TextStyle(
-          color: Colors.black26,
+          color: Colors.black54,
         ),
       ),
       icon: _tipIconShow
