@@ -25,28 +25,56 @@ class _FlushBarState extends State<FlushBarPage> {
   List<String> _toggleLabels = ["info", "warn", "error", "complete"];
   List<Color> _tipStyleColors = [
     Colors.blue[100],
-    Colors.yellow[300],
-    Colors.red[300],
-    Colors.green[300]
+    Colors.orange[100],
+    Colors.red[100],
+    Colors.green[200]
   ];
   List<Color> _tipIndicatorColors = [
     Colors.blue[300],
-    Colors.green[300],
-    Colors.green[300],
+    Colors.orange[300],
+    Colors.red[300],
     Colors.blue[300]
   ];
-  Color _tipStyleColor = Colors.blue[100];
+  List<Color> _tipIconColors = [
+    Colors.blue[500],
+    Colors.orange[500],
+    Colors.red[500],
+    Colors.blue[500]
+  ];
+
+  List<IconData> _tipIconDatas = [
+    Icons.info_outline,
+    Icons.error_outline,
+    Icons.cancel,
+    Icons.done_outline,
+  ];
+  Color _tipStyleBackgroundColor = Colors.blue[100];
+  Color _tipStyleBorderColor = Colors.blue[100];
   Color _tipIndicatorColor = Colors.blue[300];
+  Color _tipIconColor = Colors.blue[500];
+  IconData _tipIconData = Icons.info_outline;
 
   Widget _getFlushBar() {
     return Flushbar(
       title: "${_tipTitle ?? 'title'}",
+      titleText: Text(
+        "${_tipTitle ?? '提示'}",
+        style: TextStyle(
+          color: Colors.black54,
+        ),
+      ),
       message: "${_tipMessage ?? 'message'}",
+      messageText: Text(
+        "${_tipMessage ?? '提示'}",
+        style: TextStyle(
+          color: Colors.black26,
+        ),
+      ),
       icon: _tipIconShow
           ? Icon(
-              Icons.info_outline,
+              _tipIconData,
               size: 28.0,
-              color: _tipIndicatorColor,
+              color: _tipIconColor,
             )
           : null,
       duration: Duration(
@@ -57,8 +85,8 @@ class _FlushBarState extends State<FlushBarPage> {
       shouldIconPulse: _tipIconPulse,
       showProgressIndicator: _tipShowProgress,
       flushbarStyle: FlushbarStyle.GROUNDED,
-      backgroundColor: _tipStyleColor,
-      borderColor: _tipStyleColor,
+      backgroundColor: _tipStyleBackgroundColor,
+      borderColor: _tipStyleBorderColor,
       progressIndicatorBackgroundColor: _tipIndicatorColor,
       leftBarIndicatorColor: _tipIndicatorShow ? _tipIndicatorColor : null,
     );
@@ -77,8 +105,11 @@ class _FlushBarState extends State<FlushBarPage> {
         setState(() {
           for (int i = 0; i < _toggleSelected.length; i++) {
             if (i == index) {
-              _tipStyleColor = _tipStyleColors[index];
+              _tipStyleBackgroundColor = _tipStyleColors[index];
               _tipIndicatorColor = _tipIndicatorColors[index];
+              _tipStyleBorderColor = _tipIndicatorColors[index];
+              _tipIconColor = _tipIconColors[index];
+              _tipIconData = _tipIconDatas[index];
               _toggleSelected[index] = !_toggleSelected[index];
             } else {
               _toggleSelected[i] = false;
