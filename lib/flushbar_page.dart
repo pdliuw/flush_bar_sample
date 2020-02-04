@@ -20,6 +20,8 @@ class _FlushBarState extends State<FlushBarPage> {
   bool _tipIndicatorShow = true;
   bool _tipShowProgress = false;
   int _tipSecondDuration = 0;
+  double _tipBorderRadius = 0;
+  double _tipMargin = 0;
 
   List<bool> _toggleSelected = [true, false, false, false];
   List<String> _toggleLabels = ["info", "warn", "error", "complete"];
@@ -54,6 +56,13 @@ class _FlushBarState extends State<FlushBarPage> {
   Color _tipIconColor = Colors.blue[500];
   IconData _tipIconData = Icons.info_outline;
 
+  List<bool> _tipStyleSelected = [true, false];
+  List<FlushbarStyle> _tipStyleValues = [
+    FlushbarStyle.GROUNDED,
+    FlushbarStyle.FLOATING
+  ];
+  FlushbarStyle _tipStyleValue = FlushbarStyle.GROUNDED;
+
   Widget _getFlushBar() {
     return Flushbar(
       title: "${_tipTitle ?? 'title'}",
@@ -81,10 +90,12 @@ class _FlushBarState extends State<FlushBarPage> {
           seconds: (_tipSecondDuration <= 0 || _tipSecondDuration >= 11)
               ? 1
               : _tipSecondDuration),
+      borderRadius: _tipBorderRadius,
+      margin: EdgeInsets.all(_tipMargin),
       flushbarPosition: FlushbarPosition.TOP,
       shouldIconPulse: _tipIconPulse,
       showProgressIndicator: _tipShowProgress,
-      flushbarStyle: FlushbarStyle.GROUNDED,
+      flushbarStyle: _tipStyleValue,
       backgroundColor: _tipStyleBackgroundColor,
       borderColor: _tipStyleBorderColor,
       progressIndicatorBackgroundColor: _tipIndicatorColor,
@@ -142,14 +153,50 @@ class _FlushBarState extends State<FlushBarPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Container(
-                          child: Text(
-                            "preview",
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          margin: EdgeInsets.all(5),
+                          child: Column(
+                            children: <Widget>[
+                              Text(
+                                "preview",
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              ToggleButtons(
+                                isSelected: _tipStyleSelected,
+                                onPressed: (int index) {
+                                  for (int i = 0,
+                                          size = _tipStyleSelected.length;
+                                      i < size;
+                                      i++) {
+                                    if (i == index) {
+                                      _tipStyleSelected[i] =
+                                          !_tipStyleSelected[index];
+                                      _tipStyleValue = _tipStyleValues[index];
+                                    } else {
+                                      _tipStyleSelected[i] = false;
+                                    }
+                                  }
+                                  setState(() {});
+                                },
+                                children: <Widget>[
+                                  Row(
+                                    children: <Widget>[
+                                      Icon(Icons.info_outline),
+                                      Text("GROUNDED"),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      Icon(Icons.info_outline),
+                                      Text("FLOATING"),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
-                          height: 100,
                           alignment: Alignment.center,
                         ),
                       ],
@@ -161,6 +208,40 @@ class _FlushBarState extends State<FlushBarPage> {
               Divider(
                 color: Colors.grey,
                 thickness: 1,
+              ),
+              Row(
+                children: <Widget>[
+                  Text("BorderRadius"),
+                  Slider(
+                    value: _tipBorderRadius,
+                    onChanged: (double value) {
+                      setState(() {
+                        _tipBorderRadius = value.roundToDouble();
+                      });
+                    },
+                    label: "$_tipBorderRadius",
+                    min: 0,
+                    max: 45,
+                    divisions: 45,
+                  ),
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  Text("Margin"),
+                  Slider(
+                    value: _tipMargin,
+                    onChanged: (double value) {
+                      setState(() {
+                        _tipMargin = value.roundToDouble();
+                      });
+                    },
+                    label: "$_tipMargin",
+                    min: 0,
+                    max: 45,
+                    divisions: 45,
+                  ),
+                ],
               ),
               _getStatusToggle(),
               Divider(
